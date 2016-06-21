@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/sp"
+          android:title="商品"
+          android:showAsAction="ifRoom|withText"
+          android:orderInCategory="100"/>
+
+    <item android:id="@+id/fs"
+          android:title="分时"
+          android:showAsAction="ifRoom|withText"
+          android:orderInCategory="101"/>
+
+
+    <item android:id="@+id/mx"
+          android:title="明细"
+          android:showAsAction="ifRoom|withText"
+          android:orderInCategory="102"/>
+
+    <item android:id="@+id/db"
+          android:title="单笔"
+          android:showAsAction="never|withText"
+          android:orderInCategory="103"/>
+
+    <item android:id="@+id/refresh"
+          android:title="同步"
+          android:showAsAction="ifRoom|withText"
+          android:orderInCategory="104"/>
+
+    <item android:id="@+id/exit"
+          android:title="退出"
+          android:showAsAction="never|withText"
+          android:orderInCategory="105"/>
+
+</menu>
