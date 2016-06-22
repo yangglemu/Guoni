@@ -29,6 +29,7 @@ class MainActivity : Activity() {
     }
 
     var isRunning = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main)
@@ -52,7 +53,7 @@ class MainActivity : Activity() {
         when (item.itemId) {
             R.id.sp -> createListLayout(R.layout.goods, R.id.listView_goods, GoodsAdapter(this, db))
             R.id.fs -> createListLayout(R.layout.sale_fs, R.id.listView_sale_fs, SaleFSAdapter(this, db))
-            R.id.mx -> toast("Play")
+            R.id.mx -> createListLayout(R.layout.sale_mx, R.id.listView_sale_mx, SaleMXAdapter(this, db))
             R.id.db -> showPopupMenu(listLayout!!)
             R.id.refresh -> {
                 if (!isRunning) {
@@ -71,6 +72,7 @@ class MainActivity : Activity() {
         menuInflater.inflate(R.menu.main, menu.menu)
         menu.show()
     }
+
     fun toast(msg: String) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
     }

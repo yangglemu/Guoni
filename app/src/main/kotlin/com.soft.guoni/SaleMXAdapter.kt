@@ -19,7 +19,7 @@ class SaleMXAdapter(context: Context, sqlite: SQLiteDatabase) : DataAdapter(cont
             m["tm"] = c.getString(0)
             m["sl"] = c.getString(1)
             m["zq"] = c.getString(2)
-            m["je"] = c.getString(3)
+            m["je"] = c.getString(3) + ".00"
             mData.add(m)
         }
         c.close()

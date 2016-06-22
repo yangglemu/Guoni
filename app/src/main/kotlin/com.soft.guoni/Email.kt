@@ -1,7 +1,6 @@
 package com.soft.guoni
 
 import android.content.Context
-import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteDatabase
 import com.sun.mail.pop3.POP3Folder
 import org.w3c.dom.Document
@@ -70,10 +69,7 @@ class Email(val context: Context, val db: SQLiteDatabase) {
             val uid = pop3Folder.getUID(msg)
             if (isNewMessage(uid)) {
                 insertIntoDatabase(msg.content.toString())
-                try {
-                    db.execSQL("insert into history(uid,rq) values('$uid','${Date().toString("yyyy-MM-dd HH:mm:ss")}')")
-                } catch(se: SQLiteConstraintException) {
-                }
+                db.execSQL("replace into history(uid,rq) values('$uid','${Date().toString("yyyy-MM-dd HH:mm:ss")}')")
             }
             folder.close(false)
             MainActivity.isRunning = false
@@ -94,11 +90,7 @@ class Email(val context: Context, val db: SQLiteDatabase) {
                 var sj = tm
                 var sl = attr.getNamedItem("sl").nodeValue
                 var zq = "1.00"
-                try {
-                    db.execSQL("insert into goods (tm,sj,zq,sl) values('$tm',$sj,$zq,$sl)")
-                } catch(se: SQLiteConstraintException) {
-                    db.execSQL("update goods set sl=$sl where tm='$tm'")
-                }
+                db.execSQL("replace into goods (tm,sj,zq,sl) values('$tm',$sj,$zq,$sl)")
             }
         }
 
@@ -108,26 +100,20 @@ class Email(val context: Context, val db: SQLiteDatabase) {
                 val rq = attr.getNamedItem("rq").nodeValue
                 val sl = attr.getNamedItem("sl").nodeValue
                 val je = attr.getNamedItem("je").nodeValue
-                try {
-                    db.execSQL("insert into sale_db (rq,sl,je) values('$rq',$sl,$je)")
-                } catch(se: SQLiteConstraintException) {
-                    var srq = rq.split(" ")[0]
-                    db.execSQL("delete from sale_db where date(rq)='$srq'")
-                    db.execSQL("delete from sale_mx where date(rq)='$srq'")
-                    db.execSQL("insert into sale_db (rq,sl,je) values('$rq',$sl,$je)")
-                }
+                db.execSQL("replace into sale_db (rq,sl,je) values('$rq',$sl,$je)")
             }
         }
 
         if (sale_mx.length > 0) {
             for (index in  0..sale_mx.length - 1) {
                 val attr = sale_mx.item(index).attributes
+                val id = attr.getNamedItem("id").nodeValue
                 val rq = attr.getNamedItem("rq").nodeValue
                 val tm = attr.getNamedItem("tm").nodeValue
                 val sl = attr.getNamedItem("sl").nodeValue
                 val zq = attr.getNamedItem("zq").nodeValue
                 val je = attr.getNamedItem("je").nodeValue
-                db.execSQL("insert into sale_mx (rq,tm,sl,zq,je) values('$rq','$tm',$sl,$zq,$je)")
+                db.execSQL("replace into sale_mx (id,rq,tm,sl,zq,je) values('$id','$rq','$tm',$sl,$zq,$je)")
             }
         }
     }
@@ -167,18 +153,20 @@ class Email(val context: Context, val db: SQLiteDatabase) {
             goods.appendChild(element)
         }
 
-        var res_sale_mx = statement.executeQuery("select sale_db.rq as rq,sale_mx.sj as tm,sale_mx.sl as sl,"
+        var res_sale_mx = statement.executeQuery("select sale_mx.id as id,sale_db.rq as rq,sale_mx.sj as tm,sale_mx.sl as sl,"
                 + "sale_mx.zq as zq,sale_mx.je as je from sale_mx join sale_db "
                 + "on(sale_mx.djh=sale_db.djh) where date(sale_db.rq)='${date.toString(formatString)}'")
         var sale_mx = doc.createElement("sale_mx")
         root.appendChild(sale_mx)
         while (res_sale_mx.next()) {
+            val id = res_sale_mx.getString("id")
             var rq = res_sale_mx.getString("rq")
             var tm = res_sale_mx.getString("tm")
             var sl = res_sale_mx.getString("sl")
             var zq = res_sale_mx.getString("zq")
             var je = res_sale_mx.getString("je")
             var element = doc.createElement("sale_mx")
+            element.setAttribute("id", id)
             element.setAttribute("rq", rq)
             element.setAttribute("tm", tm)
             element.setAttribute("sl", sl)

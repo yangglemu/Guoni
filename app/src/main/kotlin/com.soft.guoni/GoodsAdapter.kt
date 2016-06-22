@@ -20,6 +20,7 @@ class GoodsAdapter(context: Context, sqlite: SQLiteDatabase) : DataAdapter(conte
             map.put("sj", cursor.getString(1) + ".00")
             map.put("zq", "1.00")
             map.put("sl", cursor.getString(2))
+
             mData.add(map)
         }
         cursor.close()
@@ -52,6 +53,6 @@ class GoodsAdapter(context: Context, sqlite: SQLiteDatabase) : DataAdapter(conte
         var tm: TextView = v.findViewById(R.id.goods_tm) as TextView
         var sj: TextView = v.findViewById(R.id.goods_sj) as TextView
         var zq: TextView = v.findViewById(R.id.goods_zq) as TextView
-        var sl: TextView = v.findViewById(R.id.goods_kc) as TextView
+        var sl: TextView = v.findViewById(R.id.goods_sl) as TextView
     }
 }

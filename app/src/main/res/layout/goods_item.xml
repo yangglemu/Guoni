@@ -7,7 +7,7 @@
     <TextView
             android:id="@+id/goods_tm"
            style="@style/listItemStyle"
-            android:layout_weight="2"/>
+            android:layout_weight="1.5"/>
     <View style="@style/verLine_item"/>
     <TextView
             android:id="@+id/goods_sj"
@@ -18,11 +18,11 @@
     <TextView
             android:id="@+id/goods_zq"
             style="@style/listItemStyle"
-            android:layout_weight="1"/>
+            android:layout_weight="1.5"/>
     <View style="@style/verLine_item"/>
 
     <TextView
-            android:id="@+id/goods_kc"
+            android:id="@+id/goods_sl"
             style="@style/listItemStyle"
             android:layout_weight="1"/>
     <View style="@style/verLine_item"/>
