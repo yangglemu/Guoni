@@ -2,6 +2,8 @@ package com.soft.guoni
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
+import android.util.Log
+import android.widget.Toast
 import com.sun.mail.pop3.POP3Folder
 import org.w3c.dom.Document
 import org.xml.sax.InputSource
@@ -54,6 +56,7 @@ class Email(val context: Context, val db: SQLiteDatabase) {
     }
 
     fun receive() {
+        Log.e("", "now receive is running...")
         val p = Properties()
         p.put("mail.pop3.ssl.enable", true)
         p.put("mail.pop3.host", pop3Host)
@@ -64,6 +67,7 @@ class Email(val context: Context, val db: SQLiteDatabase) {
         val folder = store.getFolder("INBOX")
         folder.open(Folder.READ_ONLY)
         val pop3Folder = folder as POP3Folder
+
         for (msg in pop3Folder.messages) {
             if (msg.subject != subject) continue
             val uid = pop3Folder.getUID(msg)
@@ -71,7 +75,9 @@ class Email(val context: Context, val db: SQLiteDatabase) {
                 insertIntoDatabase(msg.content.toString())
                 db.execSQL("replace into history(uid,rq) values('$uid','${Date().toString("yyyy-MM-dd HH:mm:ss")}')")
             }
-            folder.close(false)
+        }
+        folder.close(false)
+        synchronized(MainActivity.isRunning) {
             MainActivity.isRunning = false
         }
     }
@@ -93,6 +99,7 @@ class Email(val context: Context, val db: SQLiteDatabase) {
                 db.execSQL("replace into goods (tm,sj,zq,sl) values('$tm',$sj,$zq,$sl)")
             }
         }
+        Log.e("insertIntoDatabase()", "goods.length:${goods.length}")
 
         if (sale_db.length > 0) {
             for (index in 0..sale_db.length - 1) {
@@ -128,7 +135,7 @@ class Email(val context: Context, val db: SQLiteDatabase) {
     fun isNewMessage(uid: String): Boolean {
         var value = true
         val cursor = db.rawQuery("select count(*) from history where uid='$uid'", null)
-        if (cursor.count == 0) value = false
+        if (cursor.count > 0) value = false
         cursor.close()
         return value
     }
@@ -198,5 +205,9 @@ class Email(val context: Context, val db: SQLiteDatabase) {
         var content = stream.toString()
         stream.close()
         return content
+    }
+
+    fun toast(msg: String) {
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
     }
 }

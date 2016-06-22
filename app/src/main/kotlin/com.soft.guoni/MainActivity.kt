@@ -28,8 +28,6 @@ class MainActivity : Activity() {
         var isRunning = false
     }
 
-    var isRunning = false
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main)
@@ -56,9 +54,10 @@ class MainActivity : Activity() {
             R.id.mx -> createListLayout(R.layout.sale_mx, R.id.listView_sale_mx, SaleMXAdapter(this, db))
             R.id.db -> showPopupMenu(listLayout!!)
             R.id.refresh -> {
-                if (!isRunning) {
-                    isRunning = true
-                    Thread(Runnable { email.receive() }).start()
+                synchronized(isRunning) {
+                    if (!isRunning) {
+                        Thread(Runnable { email.receive() }).start()
+                    }
                 }
             }
             R.id.exit -> finish()
