@@ -71,13 +71,9 @@ class Email(val context: Context, val db: SQLiteDatabase) {
         for (msg in pop3Folder.messages) {
             if (msg.subject != subject) continue
             val uid = pop3Folder.getUID(msg)
-            Log.e("UID", uid)
-            Log.e("Date", msg.sentDate.toString(formatString = "yyyy-MM-dd HH:mm:ss"))
             if (isNewMessage(uid)) {
-                Log.e("State", "ready to insert into database")
                 insertIntoDatabase(msg.content.toString())
                 db.execSQL("insert into history(uid,rq) values('$uid','${Date().toString("yyyy-MM-dd HH:mm:ss")}')")
-                Log.e("State", "done to insert into database")
             } else {
                 Log.e("State", "uid is already in history!")
             }
@@ -101,7 +97,6 @@ class Email(val context: Context, val db: SQLiteDatabase) {
                 db.execSQL("replace into goods (tm,sj,zq,sl) values('$tm',$sj,$zq,$sl)")
             }
         }
-        Log.e("insertIntoDatabase()", "goods.length:${goods.length}")
 
         if (sale_db.length > 0) {
             for (index in 0..sale_db.length - 1) {

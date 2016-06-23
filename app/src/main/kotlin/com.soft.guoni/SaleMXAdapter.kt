@@ -2,6 +2,7 @@ package com.soft.guoni
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -15,6 +16,7 @@ class SaleMXAdapter(context: Context, sqlite: SQLiteDatabase, start: Date, end: 
     val start = start
     val end = end
     override fun initData() {
+        Log.e("initData()","now is ready to in")
         selectForDate(start, end)
     }
 
@@ -26,6 +28,7 @@ class SaleMXAdapter(context: Context, sqlite: SQLiteDatabase, start: Date, end: 
         val s = start.toString(formatString)
         val e = end.toString(formatString)
         val c = db.rawQuery("select tm,sl,zq,je from sale_mx where date(rq)>='$s' and date(rq)<='$e'", null)
+        Log.e("sale_mx","c.count=${c.count}")
         while (c.moveToNext()) {
             var m = HashMap<String, String>()
             m["tm"] = c.getString(0)
@@ -35,6 +38,7 @@ class SaleMXAdapter(context: Context, sqlite: SQLiteDatabase, start: Date, end: 
             mData.add(m)
         }
         c.close()
+        Log.e("mData.len",mData.size.toString())
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {

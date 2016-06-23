@@ -3,6 +3,7 @@ package com.soft.guoni
 import android.app.Activity
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -25,7 +26,6 @@ class MainActivity : Activity() {
     var listLayout: View? = null
     var listView: ListView? = null
     var timer: Timer = Timer()
-    val timeOfMinutes = 1000 * 60L
 
     companion object {
         var isRunning = false
@@ -39,11 +39,11 @@ class MainActivity : Activity() {
     }
 
     fun createListLayout(layoutId: Int, listViewId: Int, adapter: DataAdapter) {
-        if (listLayout != null) mainLayout.removeView(listLayout)
-        listLayout = layoutInflater.inflate(layoutId, null)
-        listView = listLayout?.findViewById(listViewId) as ListView
-        listView?.adapter = adapter
-        mainLayout.addView(listLayout)
+            if (listLayout != null) mainLayout.removeView(listLayout)
+            listLayout = layoutInflater.inflate(layoutId, null)
+            listView = listLayout?.findViewById(listViewId) as ListView
+            listView?.adapter = adapter
+            mainLayout.addView(listLayout)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -67,13 +67,15 @@ class MainActivity : Activity() {
                 }
             }
             R.id.refresh -> {
-                synchronized(isRunning) {
-                        timer.schedule(object : TimerTask() {
-                            override fun run() {
-                                email.receive()
-                            }
-                        }, 0)
-                }
+                timer.schedule(object : TimerTask() {
+                    override fun run() {
+                        try {
+                            email.receive()
+                        }catch(e:Exception){
+                            Log.e("Exception",e.message)
+                        }
+                    }
+                }, 50)
                 toast("同步数据成功！")
             }
             R.id.exit -> finish()
