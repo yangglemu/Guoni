@@ -56,7 +56,7 @@ class Email(val context: Context, val db: SQLiteDatabase) {
     }
 
     fun receive() {
-        Log.e("", "now receive is running...")
+        Log.e("", "now receive is ready to run...")
         val p = Properties()
         p.put("mail.pop3.ssl.enable", true)
         p.put("mail.pop3.host", pop3Host)
@@ -71,14 +71,16 @@ class Email(val context: Context, val db: SQLiteDatabase) {
         for (msg in pop3Folder.messages) {
             if (msg.subject != subject) continue
             val uid = pop3Folder.getUID(msg)
+            Log.e("UID", uid)
+            Log.e("Date", msg.sentDate.toString(formatString = "yyyy-MM-dd HH:mm:ss"))
             if (isNewMessage(uid)) {
+                Log.e("State", "ready to insert into database")
                 insertIntoDatabase(msg.content.toString())
-                db.execSQL("replace into history(uid,rq) values('$uid','${Date().toString("yyyy-MM-dd HH:mm:ss")}')")
+                db.execSQL("insert into history(uid,rq) values('$uid','${Date().toString("yyyy-MM-dd HH:mm:ss")}')")
+                Log.e("State", "done to insert into database")
+            } else {
+                Log.e("State", "uid is already in history!")
             }
-        }
-        folder.close(false)
-        synchronized(MainActivity.isRunning) {
-            MainActivity.isRunning = false
         }
     }
 
@@ -134,8 +136,11 @@ class Email(val context: Context, val db: SQLiteDatabase) {
 
     fun isNewMessage(uid: String): Boolean {
         var value = true
-        val cursor = db.rawQuery("select count(*) from history where uid='$uid'", null)
-        if (cursor.count > 0) value = false
+        val cursor = db.rawQuery("select count(*) as count from history where uid='$uid'", null)
+        if (cursor.moveToNext()) {
+            val count = cursor.getInt(0)
+            if (count > 0) value = false
+        }
         cursor.close()
         return value
     }

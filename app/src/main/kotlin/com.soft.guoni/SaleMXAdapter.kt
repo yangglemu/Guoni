@@ -10,10 +10,22 @@ import java.util.*
 /**
  * Created by yuan on 2016/6/20.
  */
-class SaleMXAdapter(context: Context, sqlite: SQLiteDatabase) : DataAdapter(context, sqlite) {
+class SaleMXAdapter(context: Context, sqlite: SQLiteDatabase, start: Date, end: Date) : DataAdapter(context, sqlite) {
+    val formatString = "yyyy-MM-dd"
+    val start = start
+    val end = end
     override fun initData() {
-        var formatString = "yyyy-MM-dd"
-        var c = db.rawQuery("select tm,sl,zq,je from sale_mx where date(rq)='${Date().toString(formatString)}'", null)
+        selectForDate(start, end)
+    }
+
+    override fun compute() {
+        throw UnsupportedOperationException()
+    }
+
+    fun selectForDate(start: Date, end: Date) {
+        val s = start.toString(formatString)
+        val e = end.toString(formatString)
+        val c = db.rawQuery("select tm,sl,zq,je from sale_mx where date(rq)>='$s' and date(rq)<='$e'", null)
         while (c.moveToNext()) {
             var m = HashMap<String, String>()
             m["tm"] = c.getString(0)
@@ -23,10 +35,6 @@ class SaleMXAdapter(context: Context, sqlite: SQLiteDatabase) : DataAdapter(cont
             mData.add(m)
         }
         c.close()
-    }
-
-    override fun compute() {
-        throw UnsupportedOperationException()
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
