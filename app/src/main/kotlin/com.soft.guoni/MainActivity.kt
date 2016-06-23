@@ -24,7 +24,7 @@ class MainActivity : Activity() {
     }
     var listLayout: View? = null
     var listView: ListView? = null
-    var timer: Timer? = null
+    var timer: Timer = Timer()
     val timeOfMinutes = 1000 * 60L
 
     companion object {
@@ -56,7 +56,8 @@ class MainActivity : Activity() {
             R.id.sp -> createListLayout(R.layout.goods, R.id.listView_goods, GoodsAdapter(this, db))
             R.id.fs -> createListLayout(R.layout.sale_fs, R.id.listView_sale_fs, SaleFSAdapter(this, db))
             R.id.mx -> createListLayout(R.layout.sale_mx, R.id.listView_sale_mx, SaleMXAdapter(this, db, Date(), Date()))
-            R.id.db -> {}
+            R.id.db -> {
+            }
             R.id.rq_mx -> {
                 val dp = MyDatePicker(this, R.style.datePickerDialog)
                 dp.show()
@@ -67,17 +68,11 @@ class MainActivity : Activity() {
             }
             R.id.refresh -> {
                 synchronized(isRunning) {
-                    if (!isRunning) {
-                        if (timer == null) timer = Timer()
-                        timer?.schedule(object : TimerTask() {
+                        timer.schedule(object : TimerTask() {
                             override fun run() {
                                 email.receive()
-                                timer?.cancel()
-                                timer = null
-                                isRunning = false
                             }
-                        }, 100)
-                    }
+                        }, 0)
                 }
                 toast("同步数据成功！")
             }
