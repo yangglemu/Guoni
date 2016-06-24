@@ -12,10 +12,12 @@ import java.util.*
  * Created by 123456 on 2016/6/23.
  */
 
-class MyDatePicker(context: Context?, theme: Int) : Dialog(context, theme), DatePicker.OnDateChangedListener {
+class MyDatePicker(context: Context?, theme: Int, postMsg: MainActivity.IPostMessage) : Dialog(context, theme), DatePicker.OnDateChangedListener {
     companion object {
         val formatString = "yyyy-MM-dd"
     }
+
+    val postMessage = postMsg
 
     val datePickerStart: DatePicker by lazy {
         findViewById(R.id.datePickerStart) as DatePicker
@@ -31,17 +33,27 @@ class MyDatePicker(context: Context?, theme: Int) : Dialog(context, theme), Date
     }
     lateinit var dateStart: Date
     lateinit var dateEnd: Date
-    var result = false
 
     override fun onCreate(bundle: Bundle?) {
         super.onCreate(bundle)
         setContentView(R.layout.date_picker)
-        buttonOK.setOnClickListener { result = true;dismiss() }
-        buttonCancel.setOnClickListener { result = false;dismiss() }
+        val calendar = Calendar.getInstance(Locale.CHINA)
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        dateStart = SimpleDateFormat(formatString).parse("$year-${month + 1}-$day")
+        dateEnd = dateStart
+        datePickerStart.init(year, month, day, this)
+        datePickerEnd.init(year, month, day, this)
+        buttonOK.setOnClickListener {
+            this.dismiss()
+            this.postMessage.postMessage(dateStart, dateEnd)
+        }
+        buttonCancel.setOnClickListener { dismiss() }
     }
 
     override fun onDateChanged(view: DatePicker?, year: Int, monthOfYear: Int, dayOfMonth: Int) {
-        val date = SimpleDateFormat(formatString).parse("${view?.year}-${view?.month}-${view?.dayOfMonth}")
+        val date = SimpleDateFormat(formatString).parse("$year-${monthOfYear + 1}-$dayOfMonth")
         if (view == datePickerStart) dateStart = date else if (view == datePickerEnd) dateEnd = date
     }
 }

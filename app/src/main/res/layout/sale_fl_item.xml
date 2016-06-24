@@ -5,29 +5,23 @@
               android:layout_height="wrap_content">
     <View style="@style/verLine_item"/>
     <TextView
-            android:id="@+id/goods_id"
+            android:id="@+id/sale_fl_id"
             style="@style/listItemStyle"
             android:layout_weight="1"/>
     <View style="@style/verLine_item"/>
     <TextView
-            android:id="@+id/goods_tm"
-           style="@style/listItemStyle"
+            android:id="@+id/sale_fl_tm"
+            style="@style/listItemStyle"
             android:layout_weight="1.5"/>
     <View style="@style/verLine_item"/>
     <TextView
-            android:id="@+id/goods_sl"
+            android:id="@+id/sale_fl_sl"
             style="@style/listItemStyle"
             android:layout_weight="1"/>
     <View style="@style/verLine_item"/>
 
     <TextView
-            android:id="@+id/goods_zq"
-            style="@style/listItemStyle"
-            android:layout_weight="1"/>
-    <View style="@style/verLine_item"/>
-
-    <TextView
-            android:id="@+id/goods_je"
+            android:id="@+id/sale_fl_je"
             style="@style/listItemStyle"
             android:layout_weight="2"/>
     <View style="@style/verLine_item"/>

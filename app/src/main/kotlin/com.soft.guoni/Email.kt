@@ -2,8 +2,6 @@ package com.soft.guoni
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
-import android.util.Log
-import android.widget.Toast
 import com.sun.mail.pop3.POP3Folder
 import org.w3c.dom.Document
 import org.xml.sax.InputSource
@@ -56,7 +54,6 @@ class Email(val context: Context, val db: SQLiteDatabase) {
     }
 
     fun receive() {
-        Log.e("", "now receive is ready to run...")
         val p = Properties()
         p.put("mail.pop3.ssl.enable", true)
         p.put("mail.pop3.host", pop3Host)
@@ -64,20 +61,17 @@ class Email(val context: Context, val db: SQLiteDatabase) {
         val session = Session.getInstance(p)
         val store = session.getStore("pop3")
         store.connect(username, password)
-        val folder = store.getFolder("INBOX")
+        val folder = store.getFolder("INBOX") as POP3Folder
         folder.open(Folder.READ_ONLY)
-        val pop3Folder = folder as POP3Folder
-
-        for (msg in pop3Folder.messages) {
+        for (msg in folder.messages) {
             if (msg.subject != subject) continue
-            val uid = pop3Folder.getUID(msg)
+            val uid = folder.getUID(msg)
             if (isNewMessage(uid)) {
                 insertIntoDatabase(msg.content.toString())
                 db.execSQL("insert into history(uid,rq) values('$uid','${Date().toString("yyyy-MM-dd HH:mm:ss")}')")
-            } else {
-                Log.e("State", "uid is already in history!")
             }
         }
+        folder.close(false)
     }
 
     fun insertIntoDatabase(content: String) {
@@ -207,7 +201,4 @@ class Email(val context: Context, val db: SQLiteDatabase) {
         return content
     }
 
-    fun toast(msg: String) {
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
-    }
 }

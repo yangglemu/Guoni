@@ -2,43 +2,51 @@ package com.soft.guoni
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import java.text.DecimalFormat
 import java.util.*
 
 /**
  * Created by yuan on 2016/6/20.
  */
-class SaleMXAdapter(context: Context, sqlite: SQLiteDatabase, start: Date, end: Date) : DataAdapter(context, sqlite) {
-    val formatString = "yyyy-MM-dd"
-    val start = start
-    val end = end
+class SaleMXAdapter(context: Context, sqlite: SQLiteDatabase, start: Date, end: Date) : DataAdapter(context, sqlite, start, end) {
     override fun initData() {
-        Log.e("initData()","now is ready to in")
-        selectForDate(start, end)
+        val s = start?.toString(MainActivity.formatString)
+        val e = end?.toString(MainActivity.formatString)
+        val c = db.rawQuery("select tm,sl,zq,je from sale_mx where date(rq)>='$s' and date(rq)<='$e'", null)
+        var sl = 0
+        var je = 0
+        var id = 0
+        var sum_sl = 0
+        var sum_je = 0
+        val formatter = DecimalFormat("#,###.00")
+        while (c.moveToNext()) {
+            sl = c.getInt(1)
+            je = c.getInt(3)
+            val m = HashMap<String, String>()
+            m["id"] = (++id).toString()
+            m["tm"] = c.getString(0) + ".00"
+            m["sl"] = sl.toString()
+            m["zq"] = formatter.format(c.getFloat(2))
+            m["je"] = formatter.format(je)
+            sum_sl += sl
+            sum_je += je
+            mData.add(m)
+        }
+        var map = HashMap<String, String>()
+        map["id"] = "合计"
+        map["tm"] = ""
+        map["sl"] = sum_sl.toString()
+        map["zq"] = ""
+        map["je"] = sum_je.toString() + ".00"
+        mData.add(map)
+        c.close()
     }
 
     override fun compute() {
         throw UnsupportedOperationException()
-    }
-
-    fun selectForDate(start: Date, end: Date) {
-        val s = start.toString(formatString)
-        val e = end.toString(formatString)
-        val c = db.rawQuery("select tm,sl,zq,je from sale_mx where date(rq)>='$s' and date(rq)<='$e'", null)
-        Log.e("sale_mx","c.count=${c.count}")
-        while (c.moveToNext()) {
-            var m = HashMap<String, String>()
-            m["tm"] = c.getString(0)
-            m["sl"] = c.getString(1)
-            m["zq"] = c.getString(2)
-            m["je"] = c.getString(3) + ".00"
-            mData.add(m)
-        }
-        c.close()
-        Log.e("mData.len",mData.size.toString())
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
@@ -53,6 +61,7 @@ class SaleMXAdapter(context: Context, sqlite: SQLiteDatabase, start: Date, end: 
             vh = v.tag as ViewHolder
         }
         var m = mData[position]
+        vh.id.text = m["id"]
         vh.tm.text = m["tm"]
         vh.sl.text = m["sl"]
         vh.zq.text = m["zq"]
@@ -61,6 +70,7 @@ class SaleMXAdapter(context: Context, sqlite: SQLiteDatabase, start: Date, end: 
     }
 
     private class ViewHolder(v: View) {
+        val id = v.findViewById(R.id.sale_mx_id) as TextView
         var tm = v.findViewById(R.id.sale_mx_tm) as TextView
         var sl = v.findViewById(R.id.sale_mx_sl) as TextView
         var zq = v.findViewById(R.id.sale_mx_zq) as TextView

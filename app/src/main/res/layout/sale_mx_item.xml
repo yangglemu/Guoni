@@ -5,9 +5,14 @@
               android:layout_height="wrap_content">
     <View style="@style/verLine_item"/>
     <TextView
+            android:id="@+id/sale_mx_id"
+            style="@style/listItemStyle"
+            android:layout_weight="1"/>
+    <View style="@style/verLine_item"/>
+    <TextView
             android:id="@+id/sale_mx_tm"
             style="@style/listItemStyle"
-            android:layout_weight="2"/>
+            android:layout_weight="1.5"/>
     <View style="@style/verLine_item"/>
     <TextView
             android:id="@+id/sale_mx_sl"
@@ -18,7 +23,7 @@
     <TextView
             android:id="@+id/sale_mx_zq"
             style="@style/listItemStyle"
-            android:layout_weight="1.5"/>
+            android:layout_weight="1"/>
     <View style="@style/verLine_item"/>
 
     <TextView

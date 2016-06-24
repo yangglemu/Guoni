@@ -3,6 +3,7 @@ package com.soft.guoni
 import android.app.Activity
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
+import android.os.Looper
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -25,25 +26,25 @@ class MainActivity : Activity() {
     }
     var listLayout: View? = null
     var listView: ListView? = null
-    var timer: Timer = Timer()
+    var timer: Timer? = null
 
     companion object {
-        var isRunning = false
         var formatString = "yyyy-MM-dd"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main)
-        createListLayout(R.layout.goods, R.id.listView_goods, GoodsAdapter(this, db))
+        val date = Date()
+        createListLayout(R.layout.sale_fl, R.id.listView_sale_fl, SaleFLAdapter(this, db, date, date))
     }
 
     fun createListLayout(layoutId: Int, listViewId: Int, adapter: DataAdapter) {
-            if (listLayout != null) mainLayout.removeView(listLayout)
-            listLayout = layoutInflater.inflate(layoutId, null)
-            listView = listLayout?.findViewById(listViewId) as ListView
-            listView?.adapter = adapter
-            mainLayout.addView(listLayout)
+        if (listLayout != null) mainLayout.removeView(listLayout)
+        listLayout = layoutInflater.inflate(layoutId, null)
+        listView = listLayout?.findViewById(listViewId) as ListView
+        listView?.adapter = adapter
+        mainLayout.addView(listLayout)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -53,30 +54,88 @@ class MainActivity : Activity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.sp -> createListLayout(R.layout.goods, R.id.listView_goods, GoodsAdapter(this, db))
-            R.id.fs -> createListLayout(R.layout.sale_fs, R.id.listView_sale_fs, SaleFSAdapter(this, db))
-            R.id.mx -> createListLayout(R.layout.sale_mx, R.id.listView_sale_mx, SaleMXAdapter(this, db, Date(), Date()))
+            R.id.sp -> {
+                createListLayout(R.layout.goods, R.id.listView_goods, GoodsAdapter(this, db))
+                toast("商品资料")
+            }
+            R.id.mx -> {
+                createListLayout(R.layout.sale_mx, R.id.listView_sale_mx, SaleMXAdapter(this, db, Date(), Date()))
+                toast("本日销售明细")
+            }
             R.id.db -> {
+                var date = Date()
+                val adapter = SaleDBAdapter(this, db, date, date)
+                createListLayout(R.layout.sale_db, R.id.listView_sale_db, adapter)
+                toast("本日销售单笔")
+            }
+            R.id.fl -> {
+                val date = Date()
+                val adapter = SaleFLAdapter(this, db, date, date)
+                createListLayout(R.layout.sale_fl, R.id.listView_sale_fl, adapter)
+                toast("本日分类汇总")
+            }
+            R.id.day -> {
+                val adapter = SaleDayAdapter(this, db)
+                createListLayout(R.layout.sale_day, R.id.listView_sale_day, adapter)
+                toast("本月按天汇总")
             }
             R.id.rq_mx -> {
-                val dp = MyDatePicker(this, R.style.datePickerDialog)
+                val dp = MyDatePicker(this, R.style.datePickerDialog, object : IPostMessage {
+                    override fun postMessage(start: Date, end: Date) {
+                        val sale_mx = SaleMXAdapter(this@MainActivity, db, start, end)
+                        createListLayout(R.layout.sale_mx, R.id.listView_sale_mx, sale_mx)
+                        toast("选择日期:销售明细")
+                    }
+                })
                 dp.show()
-                if (dp.result) {
-                    var saleMx = SaleMXAdapter(this, db, dp.dateStart, dp.dateEnd)
-                    createListLayout(R.layout.sale_mx, R.id.listView_sale_mx, saleMx)
-                }
+            }
+            R.id.rq_db -> {
+                val dp = MyDatePicker(this, R.style.datePickerDialog, object : IPostMessage {
+                    override fun postMessage(start: Date, end: Date) {
+                        val adapter = SaleDBAdapter(this@MainActivity, db, start, end)
+                        createListLayout(R.layout.sale_db, R.id.listView_sale_db, adapter)
+                        toast("选择日期:销售单笔")
+                    }
+                })
+                dp.show()
+            }
+            R.id.rq_fl -> {
+                val dp = MyDatePicker(this, R.style.datePickerDialog, object : IPostMessage {
+                    override fun postMessage(start: Date, end: Date) {
+                        val sale_fl = SaleFLAdapter(this@MainActivity, db, start, end)
+                        createListLayout(R.layout.sale_fl, R.id.listView_sale_fl, sale_fl)
+                        toast("选择日期:分类汇总")
+                    }
+                })
+                dp.show()
+            }
+            R.id.rq_day -> {
+                val dp = MyDatePicker(this, R.style.datePickerDialog, object : IPostMessage {
+                    override fun postMessage(start: Date, end: Date) {
+                        val sale_day = SaleDayAdapter(this@MainActivity, db, start, end)
+                        createListLayout(R.layout.sale_day, R.id.listView_sale_day, sale_day)
+                        toast("选择日期:按天汇总")
+                    }
+                })
+                dp.show()
             }
             R.id.refresh -> {
-                timer.schedule(object : TimerTask() {
+                timer = Timer("receive")
+                timer?.schedule(object : TimerTask() {
                     override fun run() {
                         try {
                             email.receive()
-                        }catch(e:Exception){
-                            Log.e("Exception",e.message)
+                            Looper.prepare()
+                            toast("同步数据成功！")
+                            Looper.loop()
+                        } catch(e: Exception) {
+                            Log.e("timer.schedule", "$e")
+                        } finally {
+                            timer?.cancel()
+                            timer = null
                         }
                     }
                 }, 50)
-                toast("同步数据成功！")
             }
             R.id.exit -> finish()
             else -> return false
@@ -97,5 +156,9 @@ class MainActivity : Activity() {
     override fun onDestroy() {
         super.onDestroy()
         db.close()
+    }
+
+    interface IPostMessage {
+        fun postMessage(start: Date, end: Date): Unit
     }
 }
