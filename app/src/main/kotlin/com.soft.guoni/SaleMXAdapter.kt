@@ -19,17 +19,19 @@ class SaleMXAdapter(context: Context, sqlite: SQLiteDatabase, start: Date, end: 
         var sl = 0
         var je = 0
         var id = 0
+        var zq = 0F
         var sum_sl = 0
         var sum_je = 0
         val formatter = DecimalFormat("#,###.00")
         while (c.moveToNext()) {
             sl = c.getInt(1)
             je = c.getInt(3)
+            zq = c.getFloat(2)
             val m = HashMap<String, String>()
             m["id"] = (++id).toString()
             m["tm"] = c.getString(0) + ".00"
             m["sl"] = sl.toString()
-            m["zq"] = formatter.format(c.getFloat(2))
+            m["zq"] = formatter.format(zq)
             m["je"] = formatter.format(je)
             sum_sl += sl
             sum_je += je
