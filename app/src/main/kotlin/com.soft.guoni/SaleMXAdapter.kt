@@ -2,6 +2,7 @@ package com.soft.guoni
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -15,23 +16,24 @@ class SaleMXAdapter(context: Context, sqlite: SQLiteDatabase, start: Date, end: 
     override fun initData() {
         val s = start?.toString(MainActivity.formatString)
         val e = end?.toString(MainActivity.formatString)
-        val c = db.rawQuery("select tm,sl,zq,je from sale_mx where date(rq)>='$s' and date(rq)<='$e'", null)
+        val c = db.rawQuery("select tm,sl,zq,je from sale_mx where date(rq)>='$s' and date(rq)<='$e' order by rq asc", null)
         var sl = 0
         var je = 0
         var id = 0
-        var zq = 0F
+        var zq:Float
         var sum_sl = 0
         var sum_je = 0
         val formatter = DecimalFormat("#,###.00")
         while (c.moveToNext()) {
             sl = c.getInt(1)
             je = c.getInt(3)
-            zq = c.getFloat(2)
+            zq=c.getFloat(2)
+            Log.e("zq","$zq")
             val m = HashMap<String, String>()
             m["id"] = (++id).toString()
             m["tm"] = c.getString(0) + ".00"
             m["sl"] = sl.toString()
-            m["zq"] = formatter.format(zq)
+            m["zq"] = zq.toString()
             m["je"] = formatter.format(je)
             sum_sl += sl
             sum_je += je

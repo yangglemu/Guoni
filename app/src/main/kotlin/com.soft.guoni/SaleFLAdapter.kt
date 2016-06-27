@@ -16,7 +16,12 @@ class SaleFLAdapter(context: Context, sqlite: SQLiteDatabase, start: Date, end: 
     override fun initData() {
         val s = dateFormatter.format(start)
         val e = dateFormatter.format(end)
-        val c = db.rawQuery("select tm,sum(sl) as sl,sum(je) as je from sale_mx where date(rq)>='$s' and date(rq)<='$e' group by tm", null)
+        var sb = StringBuilder()
+        sb.append("select sale_mx.tm,sum(sale_mx.sl) as sl,sum(sale_mx.je) as je from sale_mx join goods on ")
+        sb.append("(sale_mx.tm=goods.tm) where date(rq)>='$s' and date(rq)<='$e' ")
+        sb.append("group by sale_mx.tm order by goods.sj asc")
+        val c = db.rawQuery(sb.toString(), null)
+
         var id = 0
         while (c.moveToNext()) {
             val map = HashMap<String, String>()
@@ -27,6 +32,7 @@ class SaleFLAdapter(context: Context, sqlite: SQLiteDatabase, start: Date, end: 
             mData.add(map)
         }
         compute()
+        c.close()
     }
 
     override fun compute() {
