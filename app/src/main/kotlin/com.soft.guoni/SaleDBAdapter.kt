@@ -30,6 +30,11 @@ class SaleDBAdapter(context: Context, db: SQLiteDatabase, start: Date, end: Date
             map["je"] = decimalFormatter.format(c.getInt(2))
             mData.add(map)
         }
+       compute()
+        c.close()
+    }
+
+    override fun compute() {
         val sum_sl = mData.sumBy { it["sl"]!!.toInt() }
         val sum_je = mData.sumBy { decimalFormatter.parseObject(it["je"]!!).toString().toInt() }
         val map = HashMap<String, String>()
@@ -38,7 +43,6 @@ class SaleDBAdapter(context: Context, db: SQLiteDatabase, start: Date, end: Date
         map["sl"] = sum_sl.toString()
         map["je"] = decimalFormatter.format(sum_je)
         mData.add(map)
-
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
@@ -58,10 +62,6 @@ class SaleDBAdapter(context: Context, db: SQLiteDatabase, start: Date, end: Date
         vh.sl.text = map["sl"]
         vh.je.text = map["je"]
         return v
-    }
-
-    override fun compute() {
-        throw UnsupportedOperationException()
     }
 
     private class ViewHolder(v: View) {

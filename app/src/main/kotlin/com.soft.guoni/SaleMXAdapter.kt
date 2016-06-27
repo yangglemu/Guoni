@@ -2,7 +2,6 @@ package com.soft.guoni
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -17,40 +16,34 @@ class SaleMXAdapter(context: Context, sqlite: SQLiteDatabase, start: Date, end: 
         val s = start?.toString(MainActivity.formatString)
         val e = end?.toString(MainActivity.formatString)
         val c = db.rawQuery("select tm,sl,zq,je from sale_mx where date(rq)>='$s' and date(rq)<='$e' order by rq asc", null)
-        var sl = 0
-        var je = 0
         var id = 0
-        var zq:Float
-        var sum_sl = 0
-        var sum_je = 0
         val formatter = DecimalFormat("#,###.00")
         while (c.moveToNext()) {
-            sl = c.getInt(1)
-            je = c.getInt(3)
-            zq=c.getFloat(2)
-            Log.e("zq","$zq")
+            val sl = c.getInt(1)
+            val je = c.getInt(3)
+            val zq = c.getFloat(2)
             val m = HashMap<String, String>()
             m["id"] = (++id).toString()
             m["tm"] = c.getString(0) + ".00"
             m["sl"] = sl.toString()
             m["zq"] = zq.toString()
             m["je"] = formatter.format(je)
-            sum_sl += sl
-            sum_je += je
             mData.add(m)
         }
-        var map = HashMap<String, String>()
-        map["id"] = "合计"
-        map["tm"] = ""
-        map["sl"] = sum_sl.toString()
-        map["zq"] = ""
-        map["je"] = sum_je.toString() + ".00"
-        mData.add(map)
+        compute()
         c.close()
     }
 
     override fun compute() {
-        throw UnsupportedOperationException()
+        val sum_sl = mData.sumBy { it["sl"]!!.toInt() }
+        val sum_je = mData.sumBy { decimalFormatter.parseObject(it["je"]).toString().toInt() }
+        val map = HashMap<String, String>()
+        map["id"] = "合计"
+        map["tm"] = ""
+        map["sl"] = sum_sl.toString()
+        map["zq"] = ""
+        map["je"] = decimalFormatter.format(sum_je)
+        mData.add(map)
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {

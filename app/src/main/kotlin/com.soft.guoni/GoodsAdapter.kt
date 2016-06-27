@@ -5,7 +5,6 @@ import android.database.sqlite.SQLiteDatabase
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import java.text.DecimalFormat
 import java.util.*
 
 /**
@@ -19,9 +18,6 @@ class GoodsAdapter(context: Context, sqlite: SQLiteDatabase) : DataAdapter(conte
         var sl: Int
         var sj: Int
         var je: Int
-        var sum_sl = 0
-        var sum_je = 0
-        val formatter = DecimalFormat("#,###.00")
         while (cursor.moveToNext()) {
             val map: HashMap<String, String> = HashMap()
             sl = cursor.getInt(1)
@@ -31,22 +27,23 @@ class GoodsAdapter(context: Context, sqlite: SQLiteDatabase) : DataAdapter(conte
             map.put("sl", sl.toString())
             map.put("zq", "1.00")
             je = sl * sj
-            map.put("je", formatter.format(je))
-            sum_sl += sl
-            sum_je += je
+            map.put("je", decimalFormatter.format(je))
             mData.add(map)
         }
+        compute()
+        cursor.close()
+    }
+
+    override fun compute() {
+        val sum_sl = mData.sumBy { it["sl"]!!.toInt() }
+        val sum_je = mData.sumBy { decimalFormatter.parseObject(it["je"]).toString().toInt() }
         val map = HashMap<String, String>()
         map["id"] = "合计"
         map["tm"] = ""
         map["sl"] = sum_sl.toString()
         map["zq"] = ""
-        map["je"] = formatter.format(sum_je)
+        map["je"] = decimalFormatter.format(sum_je)
         mData.add(map)
-        cursor.close()
-    }
-
-    override fun compute() {
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
