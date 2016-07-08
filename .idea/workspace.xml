@@ -24,22 +24,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bc568283-5cd4-43ad-be0e-6942e3d045db" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/animated_vector_drawable_23_4_0.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/appcompat_v7_23_4_0.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/kotlin_runtime_1_0_2_1.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/kotlin_stdlib_1_0_2_1.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/libs.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/support_annotations_23_4_0.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/support_v4_23_4_0.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/support_vector_drawable_23_4_0.xml" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.8/taskArtifacts/cache.properties.lock" afterPath="$PROJECT_DIR$/.gradle/2.8/taskArtifacts/cache.properties.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.8/taskArtifacts/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/2.8/taskArtifacts/fileHashes.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.8/taskArtifacts/fileSnapshots.bin" afterPath="$PROJECT_DIR$/.gradle/2.8/taskArtifacts/fileSnapshots.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.8/taskArtifacts/taskArtifacts.bin" afterPath="$PROJECT_DIR$/.gradle/2.8/taskArtifacts/taskArtifacts.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/kotlin/com.soft.guoni/MainActivity.kt" afterPath="$PROJECT_DIR$/app/src/main/kotlin/com.soft.guoni/MainActivity.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/kotlin/com.soft.guoni/MyDatePicker.kt" afterPath="$PROJECT_DIR$/app/src/main/kotlin/com.soft.guoni/MyDatePicker.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/kotlin/com.soft.guoni/SaleDayAdapter.kt" afterPath="$PROJECT_DIR$/app/src/main/kotlin/com.soft.guoni/SaleDayAdapter.kt" />
     </list>
     <ignored path="Guoni.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -86,10 +71,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MainActivity.kt" pinned="false" current-in-tab="true">
+      <file leaf-file-name="MainActivity.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/kotlin/com.soft.guoni/MainActivity.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="24">
+            <state relative-caret-position="-147">
               <caret line="92" column="35" selection-start-line="92" selection-start-column="35" selection-end-line="92" selection-end-column="35" />
               <folding>
                 <element signature="e#24#395#0" expanded="true" />
@@ -107,11 +92,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MyDatePicker.kt" pinned="false" current-in-tab="false">
+      <file leaf-file-name="SaleDayAdapter.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/kotlin/com.soft.guoni/SaleDayAdapter.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="608">
+              <caret line="64" column="27" selection-start-line="64" selection-start-column="27" selection-end-line="64" selection-end-column="27" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MyDatePicker.kt" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/kotlin/com.soft.guoni/MyDatePicker.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="304">
-              <caret line="31" column="49" selection-start-line="31" selection-start-column="49" selection-end-line="31" selection-end-column="49" />
+            <state relative-caret-position="651">
+              <caret line="58" column="1" selection-start-line="58" selection-start-column="1" selection-end-line="58" selection-end-column="1" />
               <folding />
             </state>
           </provider>
@@ -2484,7 +2479,7 @@
       <workItem from="1466990476515" duration="2004000" />
       <workItem from="1466993417657" duration="51000" />
       <workItem from="1467940363395" duration="1309000" />
-      <workItem from="1467943093216" duration="537000" />
+      <workItem from="1467943093216" duration="648000" />
     </task>
     <task id="LOCAL-00001" summary="boot">
       <created>1466508976785</created>
@@ -2577,11 +2572,18 @@
       <option name="project" value="LOCAL" />
       <updated>1467941683977</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="by yangglemu">
+      <created>1467943659043</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1467943659043</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="82494000" />
+    <option name="totallyTimeSpent" value="82605000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -2959,6 +2961,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="380">
           <caret line="25" column="48" selection-start-line="25" selection-start-column="48" selection-end-line="25" selection-end-column="48" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2966,6 +2969,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="399">
           <caret line="32" column="16" selection-start-line="32" selection-start-column="16" selection-end-line="32" selection-end-column="16" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -3003,17 +3007,28 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/kotlin/com.soft.guoni/SaleDayAdapter.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="670">
-          <caret line="74" column="0" selection-start-line="74" selection-start-column="0" selection-end-line="74" selection-end-column="0" />
+        <state relative-caret-position="608">
+          <caret line="64" column="27" selection-start-line="64" selection-start-column="27" selection-end-line="64" selection-end-column="27" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/kotlin/com.soft.guoni/MyDatePicker.kt">
+    <entry file="file://$PROJECT_DIR$/app/src/main/kotlin/com.soft.guoni/MainActivity.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="31" column="49" selection-start-line="31" selection-start-column="49" selection-end-line="31" selection-end-column="49" />
-          <folding />
+        <state relative-caret-position="-147">
+          <caret line="92" column="35" selection-start-line="92" selection-start-column="35" selection-end-line="92" selection-end-column="35" />
+          <folding>
+            <element signature="e#24#395#0" expanded="true" />
+            <element signature="e#1730#1869#0" expanded="false" />
+            <element signature="e#1893#2055#0" expanded="false" />
+            <element signature="e#2079#2309#0" expanded="false" />
+            <element signature="e#2333#2563#0" expanded="false" />
+            <element signature="e#2588#2775#0" expanded="false" />
+            <element signature="e#2802#3270#0" expanded="false" />
+            <element signature="e#3792#4260#0" expanded="false" />
+            <element signature="e#4288#4761#0" expanded="false" />
+            <element signature="e#4790#5446#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -3028,22 +3043,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/kotlin/com.soft.guoni/MainActivity.kt">
+    <entry file="file://$PROJECT_DIR$/app/src/main/kotlin/com.soft.guoni/MyDatePicker.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="24">
-          <caret line="92" column="35" selection-start-line="92" selection-start-column="35" selection-end-line="92" selection-end-column="35" />
-          <folding>
-            <element signature="e#24#395#0" expanded="true" />
-            <element signature="e#1730#1869#0" expanded="false" />
-            <element signature="e#1893#2055#0" expanded="false" />
-            <element signature="e#2079#2309#0" expanded="false" />
-            <element signature="e#2333#2563#0" expanded="false" />
-            <element signature="e#2588#2775#0" expanded="false" />
-            <element signature="e#2802#3270#0" expanded="false" />
-            <element signature="e#3792#4260#0" expanded="false" />
-            <element signature="e#4288#4761#0" expanded="false" />
-            <element signature="e#4790#5446#0" expanded="false" />
-          </folding>
+        <state relative-caret-position="651">
+          <caret line="58" column="1" selection-start-line="58" selection-start-column="1" selection-end-line="58" selection-end-column="1" />
+          <folding />
         </state>
       </provider>
     </entry>
