@@ -19,7 +19,7 @@ import javax.xml.transform.dom.DOMSource
 import javax.xml.transform.stream.StreamResult
 
 fun Date.toString(formatString: String): String {
-    return SimpleDateFormat(formatString).format(this)
+    return SimpleDateFormat(formatString, Locale.CHINA).format(this)
 }
 
 class Email(val context: Context, val db: SQLiteDatabase) {
@@ -33,19 +33,18 @@ class Email(val context: Context, val db: SQLiteDatabase) {
         val mailBox = "yangglemu@163.com"
         val subject = "sunshine"
         val url = "jdbc:mysql://pc201408020832:3306/duobao?user=root&password=yuanbo960502"
-        val timeOfDay = 1000 * 60 * 60 * 24
     }
 
     fun send(content: String) {
-        var p = Properties()
+        val p = Properties()
         p.put("mail.smtp.ssl.enable", true)
         p.put("mail.smtp.host", smtpHost)
         p.put("mail.smtp.port", smtpPort)
         p.put("mail.smtp.auth", true)
-        var session = Session.getInstance(p, object : Authenticator() {
+        val session = Session.getInstance(p, object : Authenticator() {
             override fun getPasswordAuthentication() = PasswordAuthentication(username, password)
         })
-        var msg = MimeMessage(session)
+        val msg = MimeMessage(session)
         msg.setFrom(InternetAddress(mailBox))
         msg.setRecipients(MimeMessage.RecipientType.TO, mailBox)
         msg.subject = subject
@@ -72,6 +71,7 @@ class Email(val context: Context, val db: SQLiteDatabase) {
             }
         }
         folder.close(false)
+        store.close()
     }
 
     fun insertIntoDatabase(content: String) {
@@ -103,7 +103,7 @@ class Email(val context: Context, val db: SQLiteDatabase) {
         }
 
         if (sale_mx.length > 0) {
-            for (index in  0..sale_mx.length - 1) {
+            for (index in 0..sale_mx.length - 1) {
                 val attr = sale_mx.item(index).attributes
                 val id = attr.getNamedItem("id").nodeValue
                 val rq = attr.getNamedItem("rq").nodeValue

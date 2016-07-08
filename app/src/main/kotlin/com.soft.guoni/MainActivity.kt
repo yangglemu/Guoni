@@ -154,8 +154,14 @@ class MainActivity : Activity() {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
+        val c = Calendar.getInstance(Locale.CHINA)
+        c.time = Date()
+        c.set(Calendar.DAY_OF_YEAR, -30)
+        val date = c.time.toString(formatString)
+        val sql = "delete from history where date(rq)<'$date'"
+        db.execSQL(sql)
         db.close()
+        super.onDestroy()
     }
 
     interface IPostMessage {
