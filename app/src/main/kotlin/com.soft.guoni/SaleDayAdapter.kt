@@ -13,8 +13,8 @@ import java.util.*
 class SaleDayAdapter(context: Context, sqlite: SQLiteDatabase, start: Date? = null, end: Date? = null) :
         DataAdapter(context, sqlite, start, end) {
     override fun initData() {
-        var s: String? = null
-        var e: String? = null
+        val s: String
+        val e: String
         if (start == null || end == null) {
             val now = Date()
             val calendar = Calendar.getInstance(Locale.CHINA)
@@ -55,8 +55,8 @@ class SaleDayAdapter(context: Context, sqlite: SQLiteDatabase, start: Date? = nu
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
-        var v: View
-        var vh: ViewHolder
+        val v: View
+        val vh: ViewHolder
         if (convertView == null) {
             v = mInflater.inflate(R.layout.sale_day_item, null)
             vh = ViewHolder(v)

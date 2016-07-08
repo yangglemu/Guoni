@@ -41,7 +41,7 @@ class MyDatePicker(context: Context?, theme: Int, postMsg: MainActivity.IPostMes
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
-        dateStart = SimpleDateFormat(formatString).parse("$year-${month + 1}-$day")
+        dateStart = SimpleDateFormat(formatString, Locale.CHINA).parse("$year-${month + 1}-$day")
         dateEnd = dateStart
         datePickerStart.init(year, month, day, this)
         datePickerEnd.init(year, month, day, this)
@@ -53,7 +53,7 @@ class MyDatePicker(context: Context?, theme: Int, postMsg: MainActivity.IPostMes
     }
 
     override fun onDateChanged(view: DatePicker?, year: Int, monthOfYear: Int, dayOfMonth: Int) {
-        val date = SimpleDateFormat(formatString).parse("$year-${monthOfYear + 1}-$dayOfMonth")
+        val date = SimpleDateFormat(formatString, Locale.CHINA).parse("$year-${monthOfYear + 1}-$dayOfMonth")
         if (view == datePickerStart) dateStart = date else if (view == datePickerEnd) dateEnd = date
     }
 }
