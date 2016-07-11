@@ -1,6 +1,5 @@
 package com.soft.guoni
 
-import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.view.View
 import android.view.ViewGroup
@@ -10,8 +9,9 @@ import java.util.*
 /**
  * Created by 123456 on 2016/6/24.
  */
-class SaleDayAdapter(context: Context, sqlite: SQLiteDatabase, start: Date? = null, end: Date? = null) :
+class SaleDayAdapter(context: MainActivity, sqlite: SQLiteDatabase, start: Date? = null, end: Date? = null) :
         DataAdapter(context, sqlite, start, end) {
+
     override fun initData() {
         val s: String
         val e: String
@@ -40,18 +40,28 @@ class SaleDayAdapter(context: Context, sqlite: SQLiteDatabase, start: Date? = nu
             mData.add(map)
         }
         c.close()
-        compute()
     }
 
     override fun compute() {
         val sum_sl = mData.sumBy { it["sl"]!!.toInt() }
-        val sum_je=mData.sumBy { decimalFormatter.parseObject(it["je"]!!).toString().toInt() }
+        val sum_je = mData.sumBy { decimalFormatter.parseObject(it["je"]!!).toString().toInt() }
         val m = HashMap<String, String>()
         m["id"] = "合计"
         m["rq"] = "汇总天数:${mData.size}"
         m["sl"] = sum_sl.toString()
         m["je"] = decimalFormatter.format(sum_je)
         mData.add(m)
+    }
+
+    override fun setSort(v: View) {
+        val id = v.findViewById(R.id.sale_day_header_id)
+        val rq = v.findViewById(R.id.sale_day_header_rq)
+        val sl = v.findViewById(R.id.sale_day_header_sl)
+        val je = v.findViewById(R.id.sale_day_header_je)
+        setClick(id, "id")
+        setClick(rq, "rq")
+        setClick(sl, "sl")
+        setClick(je, "je")
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {

@@ -1,6 +1,5 @@
 package com.soft.guoni
 
-import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,7 @@ import java.util.*
 /**
  * Created by yuan on 2016/6/17.
  */
-class GoodsAdapter(context: Context, sqlite: SQLiteDatabase) : DataAdapter(context, sqlite) {
+class GoodsAdapter(context: MainActivity, sqlite: SQLiteDatabase) : DataAdapter(context, sqlite) {
 
     override fun initData() {
         val cursor = db.rawQuery("select tm,sl from goods where sl>0 order by sj asc", null)
@@ -30,7 +29,6 @@ class GoodsAdapter(context: Context, sqlite: SQLiteDatabase) : DataAdapter(conte
             map.put("je", decimalFormatter.format(je))
             mData.add(map)
         }
-        compute()
         cursor.close()
     }
 
@@ -44,6 +42,20 @@ class GoodsAdapter(context: Context, sqlite: SQLiteDatabase) : DataAdapter(conte
         map["zq"] = ""
         map["je"] = decimalFormatter.format(sum_je)
         mData.add(map)
+    }
+
+    override fun setSort(v: View) {
+        val id = v.findViewById(R.id.goods_header_id)
+        val tm = v.findViewById(R.id.goods_header_tm)
+        val sl = v.findViewById(R.id.goods_header_sl)
+        val zq = v.findViewById(R.id.goods_header_zq)
+        val je = v.findViewById(R.id.goods_header_je)
+
+        setClick(id, "id")
+        setClick(tm, "tm")
+        setClick(sl, "sl")
+        setClick(zq, "zq")
+        setClick(je, "je")
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {

@@ -1,6 +1,5 @@
 package com.soft.guoni
 
-import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,7 @@ import java.util.*
 /**
  * Created by 123456 on 2016/6/24.
  */
-class SaleFLAdapter(context: Context, sqlite: SQLiteDatabase, start: Date, end: Date) :
+class SaleFLAdapter(context: MainActivity, sqlite: SQLiteDatabase, start: Date, end: Date) :
         DataAdapter(context, sqlite, start, end) {
 
     override fun initData() {
@@ -31,8 +30,18 @@ class SaleFLAdapter(context: Context, sqlite: SQLiteDatabase, start: Date, end: 
             map["je"] = decimalFormatter.format(c.getInt(2))
             mData.add(map)
         }
-        compute()
         c.close()
+    }
+
+    override fun setSort(v: View) {
+        val id = v.findViewById(R.id.sale_fl_header_id)
+        val tm = v.findViewById(R.id.sale_fl_header_tm)
+        val sl = v.findViewById(R.id.sale_fl_header_sl)
+        val je = v.findViewById(R.id.sale_fl_header_je)
+        setClick(id, "id")
+        setClick(tm, "tm")
+        setClick(sl, "sl")
+        setClick(je, "je")
     }
 
     override fun compute() {

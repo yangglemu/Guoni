@@ -1,6 +1,5 @@
 package com.soft.guoni
 
-import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,7 @@ import java.util.*
 /**
  * Created by yuan on 2016/6/20.
  */
-class SaleMXAdapter(context: Context, sqlite: SQLiteDatabase, start: Date, end: Date) : DataAdapter(context, sqlite, start, end) {
+class SaleMXAdapter(context: MainActivity, sqlite: SQLiteDatabase, start: Date, end: Date) : DataAdapter(context, sqlite, start, end) {
     override fun initData() {
         val s = start?.toString(MainActivity.formatString)
         val e = end?.toString(MainActivity.formatString)
@@ -30,7 +29,6 @@ class SaleMXAdapter(context: Context, sqlite: SQLiteDatabase, start: Date, end: 
             m["je"] = formatter.format(je)
             mData.add(m)
         }
-        compute()
         c.close()
     }
 
@@ -44,6 +42,19 @@ class SaleMXAdapter(context: Context, sqlite: SQLiteDatabase, start: Date, end: 
         map["zq"] = ""
         map["je"] = decimalFormatter.format(sum_je)
         mData.add(map)
+    }
+
+    override fun setSort(v: View) {
+        val id = v.findViewById(R.id.sale_mx_header_id)
+        val tm = v.findViewById(R.id.sale_mx_header_tm)
+        val sl = v.findViewById(R.id.sale_mx_header_sl)
+        val zq = v.findViewById(R.id.sale_mx_header_zq)
+        val je = v.findViewById(R.id.sale_mx_header_je)
+        setClick(id, "id")
+        setClick(tm, "tm")
+        setClick(sl, "sl")
+        setClick(zq, "zq")
+        setClick(je, "je")
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {

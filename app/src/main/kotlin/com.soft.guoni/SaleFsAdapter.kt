@@ -1,6 +1,5 @@
 package com.soft.guoni
 
-import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,7 @@ import java.util.*
 /**
  * Created by yuan on 2016/6/18.
  */
-class SaleFSAdapter(context: Context, sqlite: SQLiteDatabase) : DataAdapter(context, sqlite) {
+class SaleFSAdapter(context: MainActivity, sqlite: SQLiteDatabase) : DataAdapter(context, sqlite) {
     override fun initData() {
         for (i in 11..33) {
             var m = HashMap<String, String>()
@@ -23,7 +22,10 @@ class SaleFSAdapter(context: Context, sqlite: SQLiteDatabase) : DataAdapter(cont
     }
 
     override fun compute() {
-        throw UnsupportedOperationException()
+    }
+
+    override fun setSort(v: View) {
+
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {

@@ -24,8 +24,8 @@ class MainActivity : Activity() {
     val mainLayout: LinearLayout by lazy {
         findViewById(R.id.mainLayout) as LinearLayout
     }
-    var listLayout: View? = null
-    var listView: ListView? = null
+    lateinit var listLayout: View
+    lateinit var listView: ListView
     var timer: Timer? = null
 
     companion object {
@@ -40,10 +40,11 @@ class MainActivity : Activity() {
     }
 
     fun createListLayout(layoutId: Int, listViewId: Int, adapter: DataAdapter) {
-        if (listLayout != null) mainLayout.removeView(listLayout)
+        mainLayout.removeAllViews()
         listLayout = layoutInflater.inflate(layoutId, null)
-        listView = listLayout?.findViewById(listViewId) as ListView
-        listView?.adapter = adapter
+        listView = listLayout.findViewById(listViewId) as ListView
+        listView.adapter = adapter
+        adapter.setSort(listLayout)
         mainLayout.addView(listLayout)
     }
 
@@ -56,6 +57,7 @@ class MainActivity : Activity() {
         when (item.itemId) {
             R.id.sp -> {
                 createListLayout(R.layout.goods, R.id.listView_goods, GoodsAdapter(this, db))
+
                 toast("商品资料")
             }
             R.id.mx -> {
@@ -135,7 +137,7 @@ class MainActivity : Activity() {
                             timer = null
                         }
                     }
-                }, 50)
+                }, 0)
             }
             R.id.exit -> finish()
             else -> return false

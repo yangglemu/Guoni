@@ -1,6 +1,5 @@
 package com.soft.guoni
 
-import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,7 @@ import java.util.*
  * Created by 123456 on 2016/6/24.
  */
 
-class SaleDBAdapter(context: Context, db: SQLiteDatabase, start: Date, end: Date) :
+class SaleDBAdapter(context: MainActivity, db: SQLiteDatabase, start: Date, end: Date) :
         DataAdapter(context, db, start, end) {
     override fun initData() {
         if (end!!.before(start!!)) {
@@ -30,7 +29,6 @@ class SaleDBAdapter(context: Context, db: SQLiteDatabase, start: Date, end: Date
             map["je"] = decimalFormatter.format(c.getInt(2))
             mData.add(map)
         }
-       compute()
         c.close()
     }
 
@@ -43,6 +41,17 @@ class SaleDBAdapter(context: Context, db: SQLiteDatabase, start: Date, end: Date
         map["sl"] = sum_sl.toString()
         map["je"] = decimalFormatter.format(sum_je)
         mData.add(map)
+    }
+
+    override fun setSort(v: View) {
+        val id = v.findViewById(R.id.sale_db_header_id)
+        val rq = v.findViewById(R.id.sale_db_header_rq)
+        val sl = v.findViewById(R.id.sale_db_header_sl)
+        val je = v.findViewById(R.id.sale_db_header_je)
+        setClick(id, "id")
+        setClick(sl, "sl")
+        setClick(je, "je")
+        setClick(rq, "rq")
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
