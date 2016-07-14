@@ -35,47 +35,55 @@ abstract class DataAdapter(context: MainActivity, sqlite: SQLiteDatabase, start:
     abstract fun setSort(v: View)
 
     fun setClick(tv: View, name: String) {
-        val lastMap = mData.last()
-        mData.remove(lastMap)
-        when (name) {
-            "rq" -> {
-                tv.setOnClickListener {
-                    if (tv.tag == "desc") {
-                        mData.sortByDescending { dateTimeFormatter.parse(it["rq"]) }
-                        tv.tag = "asc"
-                    } else {
-                        mData.sortBy { dateTimeFormatter.parse(it[name]) }
+        tv.setOnClickListener({
+            val lastMap = mData[mData.size - 1]
+            mData.remove(lastMap)
+            when (name) {
+                "rq" -> {
+                    if (tv.tag == "asc") {
+                        mData.sortBy {
+                            val df: SimpleDateFormat
+                            if (it[name]?.length == 10) df = dateFormatter
+                            else df = dateTimeFormatter
+                            df.parse(it[name])
+                        }
                         tv.tag = "desc"
+                    } else {
+                        mData.sortByDescending {
+                            val df: SimpleDateFormat
+                            if (it[name]?.length == 10) df = dateFormatter
+                            else df = dateTimeFormatter
+                            df.parse(it[name])
+                        }
+                        tv.tag = "asc"
                     }
                 }
-            }
-            "zq" -> {
-                tv.setOnClickListener {
-                    if (tv.tag == "desc") {
-                        mData.sortByDescending { it[name]?.toFloat() }
-                        tv.tag = "asc"
+                "je" -> {
+                    if (tv.tag == "asc") {
+                        mData.sortBy { decimalFormatter.parse(it[name]).toInt() }
+                        tv.tag = "desc"
                     } else {
+                        mData.sortByDescending { decimalFormatter.parse(it[name]).toInt() }
+                        tv.tag = "asc"
+                    }
+                }
+                else -> {
+                    if (tv.tag == "asc") {
                         mData.sortBy { it[name]?.toFloat() }
                         tv.tag = "desc"
-                    }
-                }
-            }
-            else -> {
-                tv.setOnClickListener {
-                    if (tv.tag == "desc") {
-                        mData.sortByDescending { it[name]?.toInt() }
-                        tv.tag = "asc"
                     } else {
-                        mData.sortBy { it[name]?.toInt() }
-                        tv.tag = "desc"
+                        mData.sortByDescending { it[name]?.toFloat() }
+                        tv.tag = "asc"
                     }
                 }
             }
-        }
-        mData.add(lastMap)
-        notifyDataSetChanged()
+            for (index in 0..mData.size - 1) {
+                mData[index]["id"] = (index + 1).toString()
+            }
+            mData.add(lastMap)
+            notifyDataSetChanged()
+        })
     }
-
 
     override fun getCount(): Int = mData.size
 

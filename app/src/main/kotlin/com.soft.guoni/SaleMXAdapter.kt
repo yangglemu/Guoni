@@ -4,7 +4,6 @@ import android.database.sqlite.SQLiteDatabase
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import java.text.DecimalFormat
 import java.util.*
 
 /**
@@ -15,8 +14,7 @@ class SaleMXAdapter(context: MainActivity, sqlite: SQLiteDatabase, start: Date, 
         val s = start?.toString(MainActivity.formatString)
         val e = end?.toString(MainActivity.formatString)
         val c = db.rawQuery("select tm,sl,zq,je from sale_mx where date(rq)>='$s' and date(rq)<='$e' order by rq asc", null)
-        var id = 0
-        val formatter = DecimalFormat("#,###.00")
+        var id: Int = 0
         while (c.moveToNext()) {
             val sl = c.getInt(1)
             val je = c.getInt(3)
@@ -26,7 +24,7 @@ class SaleMXAdapter(context: MainActivity, sqlite: SQLiteDatabase, start: Date, 
             m["tm"] = c.getString(0) + ".00"
             m["sl"] = sl.toString()
             m["zq"] = zq.toString()
-            m["je"] = formatter.format(je)
+            m["je"] = decimalFormatter.format(je)
             mData.add(m)
         }
         c.close()
@@ -45,12 +43,10 @@ class SaleMXAdapter(context: MainActivity, sqlite: SQLiteDatabase, start: Date, 
     }
 
     override fun setSort(v: View) {
-        val id = v.findViewById(R.id.sale_mx_header_id)
         val tm = v.findViewById(R.id.sale_mx_header_tm)
         val sl = v.findViewById(R.id.sale_mx_header_sl)
         val zq = v.findViewById(R.id.sale_mx_header_zq)
         val je = v.findViewById(R.id.sale_mx_header_je)
-        setClick(id, "id")
         setClick(tm, "tm")
         setClick(sl, "sl")
         setClick(zq, "zq")

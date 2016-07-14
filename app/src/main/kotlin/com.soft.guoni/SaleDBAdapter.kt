@@ -24,7 +24,7 @@ class SaleDBAdapter(context: MainActivity, db: SQLiteDatabase, start: Date, end:
         while (c.moveToNext()) {
             val map = HashMap<String, String>()
             map["id"] = (++id).toString()
-            map["rq"] = dateTimeFormatter.format(dateTimeFormatter.parse(c.getString(0)))
+            map["rq"] = c.getString(0)
             map["sl"] = c.getString(1)
             map["je"] = decimalFormatter.format(c.getInt(2))
             mData.add(map)
@@ -48,7 +48,6 @@ class SaleDBAdapter(context: MainActivity, db: SQLiteDatabase, start: Date, end:
         val rq = v.findViewById(R.id.sale_db_header_rq)
         val sl = v.findViewById(R.id.sale_db_header_sl)
         val je = v.findViewById(R.id.sale_db_header_je)
-        setClick(id, "id")
         setClick(sl, "sl")
         setClick(je, "je")
         setClick(rq, "rq")

@@ -51,7 +51,6 @@ class GoodsAdapter(context: MainActivity, sqlite: SQLiteDatabase) : DataAdapter(
         val zq = v.findViewById(R.id.goods_header_zq)
         val je = v.findViewById(R.id.goods_header_je)
 
-        setClick(id, "id")
         setClick(tm, "tm")
         setClick(sl, "sl")
         setClick(zq, "zq")
@@ -59,8 +58,8 @@ class GoodsAdapter(context: MainActivity, sqlite: SQLiteDatabase) : DataAdapter(
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
-        var holder: ViewHolder
-        var v: View
+        val holder: ViewHolder
+        val v: View
         if (convertView == null) {
             v = mInflater.inflate(R.layout.goods_item, null)
             holder = ViewHolder(v)
