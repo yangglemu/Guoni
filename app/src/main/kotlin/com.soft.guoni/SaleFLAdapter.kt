@@ -44,7 +44,7 @@ class SaleFLAdapter(context: MainActivity, sqlite: SQLiteDatabase, start: Date, 
 
     override fun compute() {
         val sl = mData.sumBy { it["sl"]!!.toInt() }
-        val je = mData.sumBy { decimalFormatter.parseObject(it["je"]!!).toString().toInt() }
+        val je = mData.sumBy { decimalFormatter.parse(it["je"]).toInt() }
         val map = HashMap<String, String>()
         map["id"] = "合计"
         map["tm"] = ""

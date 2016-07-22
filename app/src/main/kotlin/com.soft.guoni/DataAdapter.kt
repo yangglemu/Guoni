@@ -19,7 +19,7 @@ abstract class DataAdapter(context: MainActivity, sqlite: SQLiteDatabase, start:
     val db = sqlite
     var start: Date? = start
     var end: Date? = end
-    val decimalFormatter = DecimalFormat("#,###.00")
+    val decimalFormatter = DecimalFormat("#,##0.00")
     val dateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.CHINA)
     val dateTimeFormatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA)
 

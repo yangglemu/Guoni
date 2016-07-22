@@ -34,7 +34,7 @@ class GoodsAdapter(context: MainActivity, sqlite: SQLiteDatabase) : DataAdapter(
 
     override fun compute() {
         val sum_sl = mData.sumBy { it["sl"]!!.toInt() }
-        val sum_je = mData.sumBy { decimalFormatter.parseObject(it["je"]).toString().toInt() }
+        val sum_je = mData.sumBy { decimalFormatter.parse(it["je"]).toInt() }
         val map = HashMap<String, String>()
         map["id"] = "合计"
         map["tm"] = ""

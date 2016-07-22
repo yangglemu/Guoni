@@ -131,7 +131,9 @@ class MainActivity : Activity() {
                             toast("同步数据成功！")
                             Looper.loop()
                         } catch(e: Exception) {
-                            Log.e("timer.schedule", "$e")
+                            Looper.prepare()
+                            toast("接受邮件错误:\r\n" + e.message)
+                            Looper.loop()
                         } finally {
                             timer?.cancel()
                             timer = null

@@ -44,7 +44,7 @@ class SaleDayAdapter(context: MainActivity, sqlite: SQLiteDatabase, start: Date?
 
     override fun compute() {
         val sum_sl = mData.sumBy { it["sl"]!!.toInt() }
-        val sum_je = mData.sumBy { decimalFormatter.parseObject(it["je"]!!).toString().toInt() }
+        val sum_je = mData.sumBy { decimalFormatter.parse(it["je"]).toInt() }
         val m = HashMap<String, String>()
         m["id"] = "合计"
         m["rq"] = "汇总天数:${mData.size}"
