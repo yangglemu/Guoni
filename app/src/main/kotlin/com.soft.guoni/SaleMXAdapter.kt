@@ -54,8 +54,8 @@ class SaleMXAdapter(context: MainActivity, sqlite: SQLiteDatabase, start: Date, 
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
-        var v: View
-        var vh: ViewHolder
+        val v: View
+        val vh: ViewHolder
         if (convertView == null) {
             v = mInflater.inflate(R.layout.sale_mx_item, null)
             vh = ViewHolder(v)
@@ -64,7 +64,7 @@ class SaleMXAdapter(context: MainActivity, sqlite: SQLiteDatabase, start: Date, 
             v = convertView
             vh = v.tag as ViewHolder
         }
-        var m = mData[position]
+        val m = mData[position]
         vh.id.text = m["id"]
         vh.tm.text = m["tm"]
         vh.sl.text = m["sl"]

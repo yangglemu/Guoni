@@ -85,9 +85,9 @@ class Email(val context: Context, val db: SQLiteDatabase) {
             for (index in 0..goods.length - 1) {
                 val attr = goods.item(index).attributes
                 val tm = attr.getNamedItem("tm").nodeValue
-                var sj = tm
-                var sl = attr.getNamedItem("sl").nodeValue
-                var zq = "1.00"
+                val sj = tm
+                val sl = attr.getNamedItem("sl").nodeValue
+                val zq = "1.00"
                 db.execSQL("replace into goods (tm,sj,zq,sl) values('$tm',$sj,$zq,$sl)")
             }
         }
@@ -135,38 +135,38 @@ class Email(val context: Context, val db: SQLiteDatabase) {
     }
 
     fun getXmlContent(date: Date): String {
-        var formatString = "yyyy-MM-dd"
-        var doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument()
-        var root = doc.createElement("duobao")
+        val formatString = "yyyy-MM-dd"
+        val doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument()
+        val root = doc.createElement("duobao")
         doc.appendChild(root)
 
-        var connection = DriverManager.getConnection(url)
-        var statement = connection.createStatement()
-        var res_goods = statement.executeQuery("select sj as tm,sum(kc) as sl from goods group by sj")
-        var goods = doc.createElement("goods")
+        val connection = DriverManager.getConnection(url)
+        val statement = connection.createStatement()
+        val res_goods = statement.executeQuery("select sj as tm,sum(kc) as sl from goods group by sj")
+        val goods = doc.createElement("goods")
         root.appendChild(goods)
         while (res_goods.next()) {
-            var tm = res_goods.getInt("tm").toString()
-            var sl = res_goods.getInt("sl").toString()
-            var element = doc.createElement("goods")
+            val tm = res_goods.getInt("tm").toString()
+            val sl = res_goods.getInt("sl").toString()
+            val element = doc.createElement("goods")
             element.setAttribute("tm", tm)
             element.setAttribute("sl", sl)
             goods.appendChild(element)
         }
 
-        var res_sale_mx = statement.executeQuery("select sale_mx.id as id,sale_db.rq as rq,sale_mx.sj as tm,sale_mx.sl as sl,"
+        val res_sale_mx = statement.executeQuery("select sale_mx.id as id,sale_db.rq as rq,sale_mx.sj as tm,sale_mx.sl as sl,"
                 + "sale_mx.zq as zq,sale_mx.je as je from sale_mx join sale_db "
                 + "on(sale_mx.djh=sale_db.djh) where date(sale_db.rq)='${date.toString(formatString)}'")
-        var sale_mx = doc.createElement("sale_mx")
+        val sale_mx = doc.createElement("sale_mx")
         root.appendChild(sale_mx)
         while (res_sale_mx.next()) {
             val id = res_sale_mx.getString("id")
-            var rq = res_sale_mx.getString("rq")
-            var tm = res_sale_mx.getString("tm")
-            var sl = res_sale_mx.getString("sl")
-            var zq = res_sale_mx.getString("zq")
-            var je = res_sale_mx.getString("je")
-            var element = doc.createElement("sale_mx")
+            val rq = res_sale_mx.getString("rq")
+            val tm = res_sale_mx.getString("tm")
+            val sl = res_sale_mx.getString("sl")
+            val zq = res_sale_mx.getString("zq")
+            val je = res_sale_mx.getString("je")
+            val element = doc.createElement("sale_mx")
             element.setAttribute("id", id)
             element.setAttribute("rq", rq)
             element.setAttribute("tm", tm)
@@ -176,14 +176,14 @@ class Email(val context: Context, val db: SQLiteDatabase) {
             sale_mx.appendChild(element)
         }
 
-        var res_sale_db = statement.executeQuery("select rq,sl,je from sale_db where date(rq)='${date.toString(formatString)}'")
-        var sale_db = doc.createElement("sale_db")
+        val res_sale_db = statement.executeQuery("select rq,sl,je from sale_db where date(rq)='${date.toString(formatString)}'")
+        val sale_db = doc.createElement("sale_db")
         root.appendChild(sale_db)
         while (res_sale_db.next()) {
-            var rq = res_sale_db.getString("rq")
-            var sl = res_sale_db.getString("sl")
-            var je = res_sale_db.getString("je")
-            var element = doc.createElement("sale_db")
+            val rq = res_sale_db.getString("rq")
+            val sl = res_sale_db.getString("sl")
+            val je = res_sale_db.getString("je")
+            val element = doc.createElement("sale_db")
             element.setAttribute("rq", rq)
             element.setAttribute("sl", sl)
             element.setAttribute("je", je)
@@ -193,10 +193,10 @@ class Email(val context: Context, val db: SQLiteDatabase) {
         statement.close()
         connection.close()
 
-        var stream = ByteArrayOutputStream()
-        var tans = TransformerFactory.newInstance().newTransformer()
+        val stream = ByteArrayOutputStream()
+        val tans = TransformerFactory.newInstance().newTransformer()
         tans.transform(DOMSource(doc), StreamResult(stream))
-        var content = stream.toString()
+        val content = stream.toString()
         stream.close()
         return content
     }

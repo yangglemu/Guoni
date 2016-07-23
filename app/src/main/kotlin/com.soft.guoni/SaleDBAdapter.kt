@@ -19,7 +19,7 @@ class SaleDBAdapter(context: MainActivity, db: SQLiteDatabase, start: Date, end:
         }
         val s = start?.toString(MainActivity.formatString)
         val e = end?.toString(MainActivity.formatString)
-        var c = db.rawQuery("select rq,sl,je from sale_db where date(rq)>='$s' and date(rq)<='$e' order by rq asc", null)
+        val c = db.rawQuery("select rq,sl,je from sale_db where date(rq)>='$s' and date(rq)<='$e' order by rq asc", null)
         var id = 0
         while (c.moveToNext()) {
             val map = HashMap<String, String>()
@@ -54,8 +54,8 @@ class SaleDBAdapter(context: MainActivity, db: SQLiteDatabase, start: Date, end:
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
-        var vh: ViewHolder
-        var v: View
+        val vh: ViewHolder
+        val v: View
         if (convertView == null) {
             v = mInflater.inflate(R.layout.sale_db_item, null)
             vh = ViewHolder(v)

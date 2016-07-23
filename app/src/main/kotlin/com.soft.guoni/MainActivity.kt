@@ -2,6 +2,7 @@ package com.soft.guoni
 
 import android.app.Activity
 import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteException
 import android.os.Bundle
 import android.os.Looper
 import android.util.Log
@@ -163,8 +164,12 @@ class MainActivity : Activity() {
         c.add(Calendar.DAY_OF_MONTH, -29)
         val date = c.time.toString(formatString)
         val sql = "delete from history where date(rq)<'$date'"
-        db.execSQL(sql)
-        db.close()
+        try {
+            db.execSQL(sql)
+            db.close()
+        }catch (e:SQLiteException){
+            toast("退出程序时清理出错!"+e.message)
+        }
         super.onDestroy()
     }
 

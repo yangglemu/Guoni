@@ -15,7 +15,7 @@ class SaleFLAdapter(context: MainActivity, sqlite: SQLiteDatabase, start: Date, 
     override fun initData() {
         val s = dateFormatter.format(start)
         val e = dateFormatter.format(end)
-        var sb = StringBuilder()
+        val sb = StringBuilder()
         sb.append("select sale_mx.tm,sum(sale_mx.sl) as sl,sum(sale_mx.je) as je from sale_mx join goods on ")
         sb.append("(sale_mx.tm=goods.tm) where date(rq)>='$s' and date(rq)<='$e' ")
         sb.append("group by sale_mx.tm order by goods.sj asc")
@@ -54,8 +54,8 @@ class SaleFLAdapter(context: MainActivity, sqlite: SQLiteDatabase, start: Date, 
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
-        var v: View
-        var vh: ViewHolder
+        val v: View
+        val vh: ViewHolder
         if (convertView == null) {
             v = mInflater.inflate(R.layout.sale_fl_item, null)
             vh = ViewHolder(v)

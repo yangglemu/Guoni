@@ -12,7 +12,7 @@ import java.util.*
 class SaleFSAdapter(context: MainActivity, sqlite: SQLiteDatabase) : DataAdapter(context, sqlite) {
     override fun initData() {
         for (i in 11..33) {
-            var m = HashMap<String, String>()
+            val m = HashMap<String, String>()
             m["sjd"] = "12:00:00-14:00:00"
             m["lks"] = i.toString()
             m["yye"] = "333.00"
@@ -29,8 +29,8 @@ class SaleFSAdapter(context: MainActivity, sqlite: SQLiteDatabase) : DataAdapter
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
-        var v: View
-        var vh: ViewHolder
+        val v: View
+        val vh: ViewHolder
         if (convertView == null) {
             v = mInflater.inflate(R.layout.sale_fs_item, null)
             vh = ViewHolder(v)
@@ -39,7 +39,7 @@ class SaleFSAdapter(context: MainActivity, sqlite: SQLiteDatabase) : DataAdapter
             v = convertView
             vh = v.tag as ViewHolder
         }
-        var m = mData[position]
+        val m = mData[position]
         vh.sjd.text = m["sjd"]
         vh.lks.text = m["lks"]
         vh.yye.text = m["yye"]
