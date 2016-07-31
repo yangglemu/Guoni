@@ -19,7 +19,7 @@ class SaleDBAdapter(context: MainActivity, db: SQLiteDatabase, start: Date, end:
         }
         val s = start?.toString(MainActivity.formatString)
         val e = end?.toString(MainActivity.formatString)
-        val c = db.rawQuery("select rq,sl,je from sale_db where date(rq)>='$s' and date(rq)<='$e' order by rq asc", null)
+        val c = db.rawQuery("select datetime(rq) as rq,sl,je from sale_db where date(rq)>='$s' and date(rq)<='$e' order by rq asc", null)
         var id = 0
         while (c.moveToNext()) {
             val map = HashMap<String, String>()
@@ -44,7 +44,7 @@ class SaleDBAdapter(context: MainActivity, db: SQLiteDatabase, start: Date, end:
     }
 
     override fun setSort(v: View) {
-        val id = v.findViewById(R.id.sale_db_header_id)
+        //val id = v.findViewById(R.id.sale_db_header_id)
         val rq = v.findViewById(R.id.sale_db_header_rq)
         val sl = v.findViewById(R.id.sale_db_header_sl)
         val je = v.findViewById(R.id.sale_db_header_je)

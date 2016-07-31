@@ -37,7 +37,7 @@ class Email(val context: Context, val db: SQLiteDatabase) {
 
     fun send(content: String) {
         val p = Properties()
-        p.put("mail.smtp.ssl.enable", true)
+        //p.put("mail.smtp.ssl.enable", false)
         p.put("mail.smtp.host", smtpHost)
         p.put("mail.smtp.port", smtpPort)
         p.put("mail.smtp.auth", true)
